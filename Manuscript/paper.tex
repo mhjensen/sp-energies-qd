@@ -163,7 +163,7 @@ It is possible for Slater determinants occupying different sets of single-partic
 
 In this paper, we use the letters $p, q, r, s, \ldots$ to label arbitrary \textit{single-particle states} in the basis.  In the discussion of many-body methods that rely a single, distinguished Slater determinant $\Phi$, known as the \textit{reference state}, we use the letters $i, j, k, l, \ldots$ as placeholders for the occupied states of $\Phi$, and $a, b, c, d, \ldots$ for the unoccupied states.  A summation such as $\sum_p$ is understood as a summation over every single-particle basis state $p$.  In contrast, $\sum_i$ only sums over those that are occupied and $\sum_a$ only sums over those that are unoccupied.
 
-We will describe many-body methods within the formalism of second quantization; see for example Ref.\ \cite{shavitt2009many}.  To properly describe fermions, we introduce the annihilation and creation operators $\hat a_p$ and $\hat a_p^\dagger$. These operators must satisfy the anticommutation relations that encode the Pauli principle, namely
+We will describe many-body methods within the formalism of second quantization; see for example Ref.\ \cite{shavitt2009many}.  To properly describe fermions, we introduce the annihilation and creation operators $\hat a_p$ and $\hat a_p^\dagger$, collectively known as \textit{field operators}. These operators must satisfy the anticommutation relations that encode the Pauli principle, namely
 \begin{align*}
   &\{\hat a_p, \hat a_q\} = \{\hat a_p^\dagger, \hat a_q^\dagger\} = 0, &
   &\{\hat a_p, \hat a_q^\dagger\} = \delta_{p q}.
@@ -283,31 +283,34 @@ The power of SRG methods lies in the flexibility of the generator $\hat{\eta}$, 
 
 The SRG flow equation Eq.\ \eqref{eq:imsrgode} can be solved in the second quantization formalism described in Section \ref{subsec:modelHamiltonian}, where field operators are defined with respect to the physical vacuum state.  However, since the basis of a many-body problem grows factorially with the number of particles and the size of the model space, the applicability of the naive (free-space) SRG method is restricted to comparatively small systems.  A more practical approach is to perform the evolution \textit{in medium}, i.e.\ using a many-body Slater determinant as a reference \cite{kehrein2006flow}.  This gives rise to the IM-SRG method \cite{PhysRevC.85.061304,Hergert2016165,lnp936}.
 
-The second-quantized operators in Eq.\ \eqref{eq:second_quantized_hamiltonian} are constructed with respect to the vacuum state in the sense that their operator strings $\hat{a}_p^\dagger \hat{a}_q$ and $\hat{a}_p^\dagger \hat{a}_q^\dagger \hat{a}_s \hat{a}_r$ both have expectation values of zero in vacuum:
-\begin{align*}
-&\bra{} \hat{a}_p^\dagger \hat{a}_q \ket{} = 0, &
-&\bra{} \hat{a}_p^\dagger \hat{a}_q^\dagger \hat{a}_s \hat{a}_r \ket{} = 0.
-\end{align*}
-They are said to be \emph{normal-ordered} with respect to the vacuum state $\ket{}$.  It is possible to be normal-ordered with respect to a different state, however.  Suppose we have a Slater determinant $\Phi$ with $N$ occupied states:
-\begin{align*}
-  \ket{\Phi} \equiv \ket{i_1 i_2 \ldots i_N}
-\end{align*}
-where $\{i_1, i_2, \ldots, i_N\}$ is a set of $N$ indices that label
-the occupied states.  We define then the normal ordering of the
-physical field operators $\hat a$ and $\hat a^\dagger$ with respect to
-$|\Phi\rangle$, that is
-\begin{align*}
-  \normord{\hat{a}_p^\dagger \hat{a}_q^{}} &= \hat{a}_p^\dagger \hat{a}_q^{} - n_p^{} \delta_{p q}^{}.
-\end{align*}
-where $n_p$ is the \textit{occupancy} of the single-particle state $p$, defined as
+In the Hamiltonian representation of Eq.\ \eqref{eq:second_quantized_hamiltonian}, the one-body operator string $\hat{a}_p^\dagger \hat{a}_q$  has an expectation value of zero in vacuum:
 \begin{align}
-  n_p \equiv \begin{cases}
-    1 & \text{if $p$ is an occupied state of $\Phi$}, \\
-    0 & \text{if $p$ is an unoccupied state of $\Phi$}.
-  \end{cases}
+&\bra{} \hat{a}_p^\dagger \hat{a}_q \ket{} = 0, \label{eq:vacuum-zero1}
 \end{align}
+and the two-body string $\hat{a}_p^\dagger \hat{a}_q^\dagger \hat{a}_s \hat{a}_r$ does not couple states with one or fewer particles:
+\begin{align}
+&\bra{} \hat{a}_p^\dagger \hat{a}_q^\dagger \hat{a}_s \hat{a}_r \ket{} = 0, &
+&\bra{t} \hat{a}_p^\dagger \hat{a}_q^\dagger \hat{a}_s \hat{a}_r \ket{u} = 0. \label{eq:vacuum-zero2}
+\end{align}
+These properties arise from the fact that the creation operators always appear to the left of the annihilation operators, the defining property of a pure $k$-body operator in vacuum.  Such strings are said to be \textit{normal-ordered with respect to the vacuum state $\ket{}$}.
 
-The normal ordering notation thus provides a concise way of expressing the right-hand side.  In this new notation, we can rewrite the Hamiltonian $\hat H = \hat{H}_1 + \hat{H}_2$ in its \emph{normal-ordered representation}:
+It is also possible to be normal-ordered with respect to a different state.  Suppose our reference state is a Slater determinant $\ket{\Phi} \equiv \ket{i_1 i_2 \ldots i_N}$ containing $N$ occupied states $I \equiv \{i_1, i_2, \ldots, i_N\}$.  Let $s$ be a string of fermionic field operators.  We define the \textit{normal ordering of $s$ with respect to $|\Phi\rangle$}, denoted $\normord{s}$, to be a syntactic transformation that (a) permutes field operators belonging to $L \equiv \{\hat{a}_i^{} \mid i \in I\} \cup \{\hat{a}_a^\dagger \mid a \notin I\}$ to the left of those not belonging to $L$, and (b) attaches a negative sign to the resulting string if the permutation is odd.  The permutation in (a) is only defined up to reordering among the $L$ and non-$L$ operators, but this ambiguity has no effect on the semantics of the result due to the sign compensation in (b).  For example,
+\begin{align*}
+  \normord{\hat{a}_i \hat{a}^\dagger_j \hat{a}_a \hat{a}_b^\dagger}
+  &= \hat{a}_i \hat{a}_b^\dagger \hat{a}^\dagger_j \hat{a}_a \\
+  &= -\hat{a}_b^\dagger \hat{a}_i \hat{a}^\dagger_j \hat{a}_a.
+\end{align*}
+Here, both of the RHS expressions are valid and equivalent interpretations of the normal ordering  of $\hat{a}_i \hat{a}^\dagger_j \hat{a}_a \hat{a}_b^\dagger$.
+
+With normal-ordering, we obtain analogs of Eqs.\ \eqref{eq:vacuum-zero1} and \eqref{eq:vacuum-zero2} for the reference state $\ket{\Phi}$:
+\begin{align*}
+&\bra{\Phi} \normord{\hat{a}_p^\dagger \hat{a}_q} \ket{\Phi} = 0, &
+&\bra{\Phi} \normord{\hat{a}_p^\dagger \hat{a}_q^\dagger \hat{a}_s \hat{a}_r} \ket{\Phi} = 0,
+&\bra{\Phi_t} \normord{\hat{a}_p^\dagger \hat{a}_q^\dagger \hat{a}_s \hat{a}_r} \ket{\Phi_u} = 0.
+\end{align*}
+where $|\Phi_i\rangle \equiv \hat{a}_i^{} |\Phi\rangle$, and $|\Phi_a\rangle \equiv \hat{a}_a^\dagger |\Phi\rangle$.
+
+Likewise, we can rewrite the Hamiltonian $\hat H = \hat{H}_1 + \hat{H}_2$ in its \emph{normal-ordered representation}:
 \begin{align}
   \hat{H} = H_\varnothing + \sum_{p q} H_{p q} \normord{\hat{a}_p^\dagger \hat{a}_q^{}} + \frac{1}{4} \sum_{p q r s} H_{p q r s} \normord{\hat{a}_p^\dagger \hat{a}_q^\dagger \hat{a}_s^{} \hat{a}_r^{}},
   \label{eq:normordhamiltonian}
@@ -318,11 +321,11 @@ where
   H_{p q} &\equiv \langle p | \hat{H}_1 | q \rangle + \sum_i \langle p i | \hat{H}_2 | q i \rangle, \\
   H_{p q r s} &\equiv \langle p q | \hat{H}_2 | r s \rangle. \\
 \end{align*}
-If $\Phi$ is a state optimized by the HF method, then $H_\varnothing$ is simply the HF energy $E_\Phi$ and $H_{p q}$ is the Fock matrix $F_{p q}$.  The operator $\hat H$ in Eq.\ \eqref{eq:normordhamiltonian} is completely equivalent to $\hat H$ in Eq.\ \eqref{eq:vacuumhamiltonian}.  The only difference is that the meaning of a ``$k$-body operator'' has been redefined with respect to the reference state $\Phi$ rather than the vacuum state $\ket{}$, causing matrix elements to be reshuffled among the $k$-body operators.  Where this makes a critical difference is when the operator expressions are \emph{truncated}, i.e.\ some $k$-body operators may be discarded from the computation for efficiency reasons.  Normal-ordering can drastically alter the importance of the $k$-body operators with respect to each other.
+If $\Phi$ is a state optimized by the HF method, then $H_\varnothing$ is simply the HF energy $E_\Phi$ and $H_{p q}$ is the Fock matrix $F_{p q}$.  The operator $\hat H$ in Eq.\ \eqref{eq:normordhamiltonian} is completely equivalent to $\hat H$ in Eq.\ \eqref{eq:vacuumhamiltonian}.  The only difference is that the meaning of a pure $k$-body operator has been redefined with respect to the reference state $\ket{\Phi}$ rather than the vacuum state $\ket{}$, causing matrix elements to be reshuffled among the themselves.  Where this makes a critical difference is when the operator expressions are \emph{truncated}, i.e.\ higher-body operators discarded from the computation for efficiency reasons.  By normal-ordering with respect to an approximate state $\ket{\Phi}$, we reshuffle higher-body contributions into the lower-body terms, significantly reducing the importance of the higher-body operators.
 
-Higher-body operators arise from integrating the flow equations of Eq.~(\ref{eq:imsrgode}), which is one of the major challenges of the SRG method.  With each evaluation of the commutator, the Hamiltonian gains terms of higher order, and these induced contributions will in subsequent integration steps feed back into terms of lower order.  Thus, the higher-body contributions are not irrelevant to the final solution even if only the ground state energy (zero-body component) is of interest.
+Higher-body operators arise from integrating the flow equations of Eq.\ (\ref{eq:imsrgode}), which is one of the major challenges of the SRG method.  With each evaluation of the commutator, the Hamiltonian gains terms of higher order, and these induced contributions will in subsequent integration steps feed back into terms of lower order.  Thus, the higher-body contributions are not irrelevant to the final solution even if only the ground state energy (zero-body component) is of interest.
 
-Computationally, higher-body terms rapidly become unfeasible to handle: the amount of memory required to store a $k$-body operator is grows exponentially with $k$.  Moreover, the flow equations are capable of generating an infinite number of higher-body terms as the Hamiltonian evolves.  Thus, to make the method tractable, the IM-SRG flow equations must be closed by truncating the equations to a finite order.
+Computationally, higher-body terms rapidly become unfeasible to handle: the amount of memory required to store a $k$-body operator grows exponentially with $k$.  Moreover, the flow equations are capable of generating an infinite number of higher-body terms as the Hamiltonian evolves.  Thus, to make the method tractable, the IM-SRG flow equations must be closed by truncating the equations to a finite order.
 
 In this paper, we truncate both $\hat{H}$ and $\hat{\eta}$ at the two-body level, leading to an approach known as IM-SRG(2).  This normal-ordered two-body approximation appears to be sufficient in many cases and has yielded excellent results for several nuclei \cite{PhysRevLett.106.222502,PhysRevLett.109.052501,IMSRG}.
 
